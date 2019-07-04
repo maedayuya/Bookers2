@@ -1,0 +1,109 @@
+<div class="container">
+	<p id="notice" style="color: green;">
+	<% if flash[:notice] %>
+		<%= flash[:notice] %>
+	<% end %>
+	</p>
+  <div class="row">
+	<%= render 'users/list', user: @user, book: @book %>
+  	<div class="col-xs-9">
+	<div>
+	  <% if current_user != @user %>
+		<% if current_user.following?(@user) %>
+			<%= form_for(current_user.active_relationships.find_by(following_id: @user.id),html: {method: :delete}) do |f| %>
+				<%= f.submit 'Unfollow', class: "btn btn-danger " %>
+			<% end %>
+		<% else %>
+			<%= form_for(current_user.active_relationships.build) do |f| %>
+			  <div>
+				<%= hidden_field_tag :following_id, @user.id %>
+			  </div>
+				<%= f.submit "Follow", class: "btn btn-primary" %>
+			<% end %>
+		<% end %>
+	  <% end %>
+	</div>
+
+	  <h2> Books</h2>
+
+		<table class="table table-hover table-inverse">
+		  <thead>
+			<tr>
+			  <th></th>
+			  <th>Title</th>
+			  <th>Body</th>
+			</tr>
+		  </thead>
+
+		  <tbody>
+			<% @user.books.each do |book| %>
+			<tr>
+			  <td>
+				<%= attachment_image_tag @user, :profile_image, :fill, 40, 40, format: 'jpeg', fallback:"no_image.jpeg",size:'40x40' %>
+			  </td>
+			  <td>
+				<%=link_to book.title, book_path(book) %>
+			  </td>
+			  <td>
+			  	<%= book.body %>
+			  </td>
+			</tr>
+			<% end %>
+		  </tbody>
+
+		</table>
+
+	  <h2> Favorite Books</h2>
+
+		<table class="table table-hover table-inverse">
+		  <thead>
+			<tr>
+			  <th></th>
+			  <th>Title</th>
+			  <th>Body</th>
+			  <th></th>
+			</tr>
+		  </thead>
+
+		  <tbody>
+			<% @favorites.each do |favorite| %>
+			<% @book_id = favorite.book_id %>
+			<% book = Book.find(favorite.book_id) %>
+			<tr>
+				  <td>
+				  	<%= link_to user_path(book.user) do %>
+						<%= attachment_image_tag book.user, :profile_image, :fill, 40, 40, format: 'jpeg' %>
+					<% end %>
+				  </td>
+				  <td>
+				    <%=link_to book.title, book_path(book) %>
+				  </td>
+				  <td>
+					<%= book.body %>
+				  </td>
+					<% if book.favorited_by?(current_user) %>
+						    <td>
+							  	<%= link_to book_favorites_path(book), method: :delete do %>
+								  	<span class="glyphicon glyphicon-heart" aria-hidden="true" style="color: red;"></span>
+								  	<%= book.favorites.count %> いいね
+								<% end %>
+							</td>
+						  <% else %>
+						    <td>
+						    	<%= link_to book_favorites_path(book), method: :post do %>
+							    	<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+							    	<%= book.favorites.count %> いいね
+							    <% end %>
+							</td>
+					<% end %>
+
+			</tr>
+			<% end %>
+		  </tbody>
+
+		</table>
+
+	</div>
+  </div>
+</div>
+

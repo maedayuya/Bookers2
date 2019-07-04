@@ -1,0 +1,36 @@
+<h1><%= "#{@user.name} 's following" %></h1>
+<div class="container">
+  <div class="row">
+
+	<div class="col-xs-9">
+		<table class="table table-hover table-inverse">
+
+		  <thead>
+			<tr>
+			  <th>image</th>
+			  <th>name</th>
+			  <th></th>
+			</tr>
+		  </thead>
+
+		  <tbody>
+		  	<h2> Users</h2>
+			<% @user.following.each do |user| %>
+			<tr>
+			  <td>
+			    <%= attachment_image_tag user, :profile_image, :fill, 40, 40, format: 'jpeg', fallback: 'no_image.jpeg', size: '40x40' %><br>
+			  </td>
+			  <td>
+			    <%= user.name %><br>
+			  </td>
+			  <td>
+				<%= link_to "show" , user_path(user) %>
+			  </td>
+			</tr>
+			<% end %>
+		  </tbody>
+
+		</table>
+	</div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="container">
+	<p id="notice" style="color: green;">
+	<% if flash[:notice] %>
+		<%= flash[:notice] %>
+	<% end %>
+	</p>
+　　<h2> User info</h2>
+
+	<%= form_for(@user) do |f| %>
+
+	  <div class="field">
+	    <%= f.label :name %>
+	    <%= f.text_field :name, autofocus: true %>
+	  </div>
+
+	 <div class="field">
+	 	<%= f.label :image %>
+	 	<%= f.attachment_field :profile_image %>
+	 </div>
+
+	 <div class="field">
+	 	<%= f.label :introduction %>
+	 	<%= f.text_area :introduction, autofocus: true %><br />
+	 </div>
+
+	 	<%= f.submit "Update User" %>
+	<% end %>
+</div>

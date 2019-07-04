@@ -1,0 +1,9 @@
+<h1> Editing Comment</h1>
+
+<%= form_for [@book, @book_comment] do |f| %>
+
+  <h4> Comment</h4>
+	<%= f.text_area :comment %><br>
+	<%= f.submit "Create Comment" %>
+
+<% end %>
