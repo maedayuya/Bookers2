@@ -19,6 +19,12 @@ class UsersController < ApplicationController
   	@book = Book.new
   end
 
+  def search
+    @book = Book.new
+    @users = User.search(params[:model],params[:search_method],params[:search])
+  end
+
+
   def show
   	@user = User.find(params[:id])
   	@book = Book.new

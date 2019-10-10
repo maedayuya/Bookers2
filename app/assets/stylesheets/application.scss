@@ -11,7 +11,12 @@
  * It is generally better to create a new file per style scope.
  *
  *= require_tree .
+ *= require_tree ../../../app/assets/stylesheets/.
  *= require_self
  */
  @import "bootstrap-sprockets";
  @import "bootstrap";
+
+ #container{
+ 	height: 500px;
+ }

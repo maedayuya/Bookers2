@@ -37,17 +37,15 @@
 			</div>
 
 			<h2 class="new-book"> New book</h2>
-
+			  <%= form_for(book, remote: true) do |f| %>
 				<h4> Title</h4>
-				<%= text_field_tag :title %>
+				<%= f.text_field :title %>
 
 				<h4> Opinion</h4>
-				<%= text_area_tag :body %>
+				<%= f.text_area :body %>
 
-				<%= link_to books_path(@book), method: :post do %>
-
-					<%= submit_tag 'Create Book'%>
-				<% end %>
+				<%= f.submit 'Create Book'%>
+     		  <% end %>
 
 			</form>
 

@@ -7,6 +7,12 @@ class BooksController < ApplicationController
   	@book = Book.new
   end
 
+  def search
+    @book = Book.new
+    @books = Book.search(params[:model],params[:search_method],params[:search])
+    @users = User.search(params[:model],params[:search_method],params[:search])
+  end
+
   def show
     @book_new = Book.new
   	@book = Book.find(params[:id])
@@ -16,13 +22,17 @@ class BooksController < ApplicationController
   def create
   	@book = Book.new(book_params)
     @book.user_id = current_user.id
-  	if @book.save
-  		flash[:notice] = "Book was successfully created."
-  	  redirect_to book_path(@book)
-    else
-      @books = Book.all
-      render 'books/index'
-  	end
+
+    respond_to do |format|
+      if @book.save
+        format.html { redirect_to @book, notice: 'User was successfully created.' }
+        format.js {}
+        format.json { render :show, status: :created, location: @book }
+      else
+        format.html { render :show }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def edit

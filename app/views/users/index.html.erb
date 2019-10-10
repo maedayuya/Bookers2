@@ -7,6 +7,7 @@
   <div class="row">
 	<%= render 'users/list', user: current_user, book: @book %>
   	<div class="col-xs-9">
+	  	<h2> Users</h2>
 
 		<table class="table table-hover table-inverse">
 
@@ -19,7 +20,6 @@
 		  </thead>
 
 		  <tbody>
-		  	<h2> Users</h2>
 			<% @users.each do |user| %>
 			<tr>
 			  <td>

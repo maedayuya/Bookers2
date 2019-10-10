@@ -13,8 +13,11 @@ Rails.application.routes.draw do
   end
   resources :relationships, only: [:create, :destroy]
 
+  get "/search" => "books#search"
+  
+  post '/books/:book_id/favorites' => "favorites#create"
+  delete '/books/:book_id/favorites' => "favorites#destroy"
   resources :books , only: [:index,:show,:create,:edit,:update,:destroy] do
-  	resource :favorites, only: [:create, :destroy]
   	resources :book_comments, only: [:create, :edit, :update, :destroy]
   end
 

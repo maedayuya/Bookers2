@@ -36,6 +36,24 @@ class User < ApplicationRecord
   	following.include?(other_user)
   end
 
+  def self.search(model,search_method,search)
+    if model == "user"
+      if search_method == "完全一致"
+          # 〜に完全に一致する
+          User.where(['name LIKE ?', "#{search}"])
+        elsif search_method == "を含む"
+          # 〜を含む
+          User.where(['name LIKE ?', "%#{search}%"])
+        elsif search_method == "から始まる"
+          # 〜から始まる
+          User.where(['name LIKE ?', "#{search}%"])
+        elsif search_method == "で終わる"
+          # 〜で終わる
+          User.where(['name LIKE ?', "%#{search}"])
+        end
+    end
+  end
+
   validates :name, presence: true, length: { minimum: 2, maximum: 20}
   validates :introduction, length: { maximum: 50}
 end
