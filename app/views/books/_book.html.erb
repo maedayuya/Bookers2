@@ -10,10 +10,7 @@
   <td>
 	<%= book.body %>
   </td>
-		    <td id="favorite-<%= book.id %>">
-		    	<%= render partial: "favorite", locals: { book: book } %>
-			  	
-			</td>
-		  
-
+  <td id="favorite-<%= book.id %>">
+	<%= render partial: "favorite", locals: { book: book } %>
+  </td>
 </tr>
