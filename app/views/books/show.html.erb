@@ -34,21 +34,10 @@
 						  	<%= link_to "Destroy", book_path(@book), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn-sm btn-danger destroy_book"%>
 						  </td>
 					  <% end %>
-						  <% if @book.favorited_by?(current_user) %>
-						    <td>
-							  	<%= link_to book_favorites_path(@book), method: :delete do %>
-								  	<span class="glyphicon glyphicon-heart" aria-hidden="true" style="color: red;"></span>
-								  	<%= @book.favorites.count %> いいね
-								<% end %>
-							</td>
-						  <% else %>
-						    <td>
-						    	<%= link_to book_favorites_path(@book), method: :post do %>
-							    	<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-							    	<%= @book.favorites.count %> いいね
-							    <% end %>
-							</td>
-						  <% end %>
+						    <td id="favorite-<%= @book.id %>">
+								<%= render partial: "favorite", locals: { book: @book } %>
+  							</td>
+
 					</tr>
 				  </tbody>
 			</table>

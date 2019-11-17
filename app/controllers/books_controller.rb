@@ -3,7 +3,7 @@ class BooksController < ApplicationController
   before_action :correct_user, only: [:edit, :update]
 
   def index
-  	@books = Book.all
+  	@books = Book.page(params[:page]).reverse_order
   	@book = Book.new
   end
 
@@ -11,6 +11,27 @@ class BooksController < ApplicationController
     @book = Book.new
     @books = Book.search(params[:model],params[:search_method],params[:search])
     @users = User.search(params[:model],params[:search_method],params[:search])
+    new_history = current_user.search_histories.new(user_id: current_user.id,search: params[:search])
+    if current_user.search_histories.exists?(search: params[:search])
+      old_history = current_user.search_histories.find_by(search: params[:search])
+      old_history.destroy
+    end
+    if params[:search] != ""
+    new_history.save
+    end
+  end
+
+  def history
+    sort = params[:sort] || "created_at DESC"
+    @histories = SearchHistory.where(user_id: current_user.id).order(sort)
+  end
+
+  def sort
+    sort = params[:sort] || "created_at DESC"
+    @histories = SearchHistory.where(user_id: current_user.id).order(sort)
+    respond_to do |format|
+    format.js {}
+    end
   end
 
   def show
@@ -25,12 +46,11 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       if @book.save
-        format.html { redirect_to @book, notice: 'User was successfully created.' }
         format.js {}
-        format.json { render :show, status: :created, location: @book }
       else
-        format.html { render :show }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        @books = Book.page(params[:page]).reverse_order
+        format.html { render :index }
+        format.json { render json: @book.errors, status: :unprocessable_entity }
       end
     end
   end

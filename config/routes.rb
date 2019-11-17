@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   resources :relationships, only: [:create, :destroy]
 
   get "/search" => "books#search"
-  
+
+  get "/search/history" => "books#history"
+  post "/search/sort" => "books#sort"
+  get "/search/sort" => "books#sort"
+
   post '/books/:book_id/favorites' => "favorites#create"
   delete '/books/:book_id/favorites' => "favorites#destroy"
   resources :books , only: [:index,:show,:create,:edit,:update,:destroy] do

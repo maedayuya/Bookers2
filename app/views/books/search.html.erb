@@ -10,8 +10,8 @@
     			<% end %>
     </div>
 
-<% if params[:model] == "book" %>
 
+<% if params[:model] == "book" %>
 	<div class="row">
 
 		<%= render 'users/list', user: current_user, book: @book %>
@@ -46,31 +46,14 @@
 				  <td>
 					<%= book.body %>
 				  </td>
-					<% if book.favorited_by?(current_user) %>
-						    <td>
-							  	<%= link_to book_favorites_path(book), method: :delete do %>
-								  	<span class="glyphicon glyphicon-heart" aria-hidden="true" style="color: red;"></span>
-								  	<%= book.favorites.count %> いいね
-								<% end %>
-							</td>
-						  <% else %>
-						    <td>
-						    	<%= link_to book_favorites_path(book), method: :post do %>
-							    	<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-							    	<%= book.favorites.count %> いいね
-							    <% end %>
-							</td>
-					<% end %>
-
+				  <td id="favorite-<%= book.id %>">
+					<%= render partial: "favorite", locals: { book: book } %>
+  				  </td>
 				</tr>
 				<% end %>
 			  </tbody>
 
 			</table>
-
-		</div>
-	</div>
-
 <% else %>
 
 <div class="row">
@@ -107,9 +90,10 @@
 		  </tbody>
 
 		</table>
+<% end %>
+
+		<%= link_to "検索履歴", search_history_path %>
 
 	</div>
   </div>
 </div>
-
-<% end %>

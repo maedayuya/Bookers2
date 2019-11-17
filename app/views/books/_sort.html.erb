@@ -1,0 +1,9 @@
+<% @histories.each do |history| %>
+<tr>
+  <td>
+	<%= history.search %>
+  </td>
+  <td>
+	<%= history.created_at.strftime("%Y-%m-%d %H:%M") %>
+  </td>
+<% end %>

@@ -84,3 +84,4 @@ gem 'cocoon'
 
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'kaminari'
