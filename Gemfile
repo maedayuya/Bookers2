@@ -85,3 +85,6 @@ gem 'cocoon'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'kaminari'
+gem 'jp_prefecture'
+gem 'simple_form'  #formをすっきり書けます
+

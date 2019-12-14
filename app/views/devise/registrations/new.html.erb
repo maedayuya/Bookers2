@@ -1,36 +1,102 @@
-<div class="container">
-  <h2>Sign up</h2>
+<div class="container" style="display:table;">
+  <div class="row" style="display:table-cell; width: 50%;">
+    <h2>Sign up</h2>
 
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= render "devise/shared/error_messages", resource: resource %>
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-    <div class="field">
-      <%= f.label :name %><br />
-      <%= f.text_field :name, autofocus: true %>
+      <div class="field">
+        <%= f.input :name, autofocus: true, required: true %>
+      </div>
+
+      <div class="field">
+        <%= f.input :email, autofocus: true, autocomplete: "email",required: true %>
+      </div>
+
+      <div class="field">
+        <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+        <% end %><br />
+        <%= f.input :password, autocomplete: "new-password",
+          required: true %>
+      </div>
+
+      <div class="field">
+        <%= f.input :password_confirmation, autocomplete: "new-password",
+          required: true%>
+      </div>
+
+      <div class="field">
+
+          <%= f.input :postcode,input_html:{id: "user_postcode",onblur: "codeAddress()"} %>
+          <%= f.input :prefecture_code, collection: JpPrefecture::Prefecture.all, :value_method => :name, include_blank: '都道府県' %>
+          <%= f.input :address_city %>
+          <%= f.input :address_street %>
+          <%= f.input :address_building %>
+      </div>
+
+      <div class="actions">
+        <%= f.button :submit, "Sign up", class: "btn btn-success" %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="row" style="margin: 330px auto 0; display:table-cell; width: 50%; vertical-align: bottom;">
+
+    <!-- 地名入力用のinputを追加 -->
+
+    <div id='map' style="margin-bottom: 19px">
     </div>
+    <%= render "devise/shared/links"%>
 
-    <div class="field">
-      <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-    </div>
+    <style>
+    #map{
+      height: 400px;
+    }
+    </style>
 
-    <div class="field">
-      <%= f.label :password %>
-      <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em>
-      <% end %><br />
-      <%= f.password_field :password, autocomplete: "new-password" %>
-    </div>
+    <script>
+    /*
+    mapを関数の外で定義(codeAddressでも使うため)
+    geocoderを用意
+    */
 
-    <div class="field">
-      <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-    </div>
+    let map
+    let geocoder
 
-    <div class="actions">
-      <%= f.submit "Sign up" %>
-    </div>
-  <% end %>
+    function initMap(){
+      // geocoderを初期化
+      geocoder = new google.maps.Geocoder()
 
-  <%= render "devise/shared/links" %>
+      map = new google.maps.Map(document.getElementById('map'), {
+    // 始めに表示する地図の緯度、軽度
+      center: {lat: 34.7, lng: 135.5},
+      zoom: 15
+      });
+    }
+
+    function codeAddress(){
+      // 入力を取得
+      let inputAddress = document.getElementById('user_postcode').value;
+
+      // geocodingしたあとmapを移動
+      geocoder.geocode( { 'address': inputAddress}, function(results, status) {
+        if (status == 'OK') {
+    　　　　　　　　　　　　// map.setCenterで地図が移動
+          map.setCenter(results[0].geometry.location);
+
+    　　　　　　　　　　　　// google.maps.MarkerでGoogleMap上の指定位置にマーカが立つ
+          var marker = new google.maps.Marker({
+              map: map,
+              position: results[0].geometry.location
+          });
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBD4P2U1emgvES6VvNXwJFQNu0FqTuOOVY&callback=initMap" async defer></script>
+  </div>
 </div>

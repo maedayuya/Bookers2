@@ -31,8 +31,7 @@
 
 			<div class="row">
 			    <div>
-				<%= link_to " " , edit_user_path(user),class: "
-				col-xs-12 btn btn-default glyphicon glyphicon-wrench"  %>
+					<button type="button" class="col-xs-12 btn btn-default glyphicon glyphicon-wrench" data-toggle="modal" data-target="#modal1"></button>
 				</div>
 			</div>
 
@@ -50,3 +49,52 @@
 			</form>
 
 		</div>
+
+<div class="modal fade" id="modal1" tabindex="-1"
+      role="dialog" aria-labelledby="label1" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="label1">Edit User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <!-- モーダルの中身 -->
+		<div class="container">
+			<p id="notice" style="color: green;">
+			<% if flash[:notice] %>
+				<%= flash[:notice] %>
+			<% end %>
+			</p>
+		　　<h2> User info</h2>
+
+			<%= form_for(@user) do |f| %>
+
+			  <div class="field">
+			    <%= f.label :name %>
+			    <%= f.text_field :name, autofocus: true %>
+			  </div>
+
+			 <div class="field">
+			 	<%= f.label :image %>
+			 	<%= f.attachment_field :profile_image %>
+			 </div>
+
+			 <div class="field">
+			 	<%= f.label :introduction %>
+			 	<%= f.text_area :introduction, autofocus: true %><br />
+			 </div>
+
+			 	<%= f.submit "Update User" %>
+			<% end %>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
