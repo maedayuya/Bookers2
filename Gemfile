@@ -49,6 +49,9 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'pry-rails' #デバッグのgem(開発環境のみ適用する)
+  # メール送信確認用のGem
+  gem 'letter_opener_web', '~> 1.0'
+
 end
 
 group :test do
@@ -87,4 +90,3 @@ gem 'omniauth-facebook'
 gem 'kaminari'
 gem 'jp_prefecture'
 gem 'simple_form'  #formをすっきり書けます
-

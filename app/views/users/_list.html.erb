@@ -28,12 +28,30 @@
 					</tbody>
 				</table>
 			</div>
-
+		  <% if current_user == user %>
 			<div class="row">
 			    <div>
 					<button type="button" class="col-xs-12 btn btn-default glyphicon glyphicon-wrench" data-toggle="modal" data-target="#modal1"></button>
 				</div>
 			</div>
+		  <% end %>
+
+		  <div>
+		    <% if current_user != user %>
+			  <% if current_user.following?(@user) %>
+				<%= form_for(current_user.active_relationships.find_by(following_id: user.id),html: {method: :delete}) do |f| %>
+					<%= f.submit 'Unfollow', class: "btn btn-danger " %>
+				<% end %>
+			  <% else %>
+				<%= form_for(current_user.active_relationships.build) do |f| %>
+					<%= hidden_field_tag :following_id, user.id %>
+					<%= f.submit "Follow", class: "btn btn-primary" %>
+					<%= link_to 'DM', message_path(user.id),class: 'btn btn-info' %>
+				<% end %>
+			  <% end %>
+		    <% end %>
+
+		  </div>
 
 			<h2 class="new-book"> New book</h2>
 			  <%= form_for(book, remote: true) do |f| %>
@@ -70,7 +88,7 @@
 			</p>
 		　　<h2> User info</h2>
 
-			<%= form_for(@user) do |f| %>
+			<%= form_for(user) do |f| %>
 
 			  <div class="field">
 			    <%= f.label :name %>

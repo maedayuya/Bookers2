@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-
-  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+  get 'message/:id' => 'messages#show', as: 'message'
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' ,registrations: 'users/registrations'}
   root 'home#top'
   get "home/about" => "home#about"
 
@@ -24,5 +24,7 @@ Rails.application.routes.draw do
   resources :books , only: [:index,:show,:create,:edit,:update,:destroy] do
   	resources :book_comments, only: [:create, :edit, :update, :destroy]
   end
+
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
 end

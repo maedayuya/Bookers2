@@ -23,6 +23,11 @@ class User < ApplicationRecord
 
   has_many :search_histories, dependent: :destroy
 
+  has_many :user_rooms
+  has_many :messages
+  has_many :rooms, through: :user_rooms
+
+
 
   # ユーザをフォローする
   def follow(other_user)

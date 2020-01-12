@@ -7,22 +7,6 @@
   <div class="row">
 	<%= render 'users/list', user: @user, book: @book, remote: true %>
   	<div class="col-xs-9">
-	<div>
-	  <% if current_user != @user %>
-		<% if current_user.following?(@user) %>
-			<%= form_for(current_user.active_relationships.find_by(following_id: @user.id),html: {method: :delete}) do |f| %>
-				<%= f.submit 'Unfollow', class: "btn btn-danger " %>
-			<% end %>
-		<% else %>
-			<%= form_for(current_user.active_relationships.build) do |f| %>
-			  <div>
-				<%= hidden_field_tag :following_id, @user.id %>
-			  </div>
-				<%= f.submit "Follow", class: "btn btn-primary" %>
-			<% end %>
-		<% end %>
-	  <% end %>
-	</div>
 
 	  <h2> Books</h2>
 
@@ -95,53 +79,3 @@
   </div>
 </div>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal1">
-  Edit User
-</button>
-<div class="modal fade" id="modal1" tabindex="-1"
-      role="dialog" aria-labelledby="label1" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="label1">Edit User</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-<div class="container">
-	<p id="notice" style="color: green;">
-	<% if flash[:notice] %>
-		<%= flash[:notice] %>
-	<% end %>
-	</p>
-　　<h2> User info</h2>
-
-	<%= form_for(@user) do |f| %>
-
-	  <div class="field">
-	    <%= f.label :name %>
-	    <%= f.text_field :name, autofocus: true %>
-	  </div>
-
-	 <div class="field">
-	 	<%= f.label :image %>
-	 	<%= f.attachment_field :profile_image %>
-	 </div>
-
-	 <div class="field">
-	 	<%= f.label :introduction %>
-	 	<%= f.text_area :introduction, autofocus: true %><br />
-	 </div>
-
-	 	<%= f.submit "Update User" %>
-	<% end %>
-</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">OK</button>
-      </div>
-    </div>
-  </div>
-</div>
